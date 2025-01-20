@@ -1,0 +1,87 @@
+import React, { useState, useEffect, useReducer, useContext,useMemo,useCallback } from 'react';
+import { AssemblyContext } from '../AssemblyContext';
+
+
+const initialState = { assemblyCount: 0, distributionCount: 0 };
+
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'INCREMENT_ASSEMBLY':
+            return { ...state, assemblyCount: state.assemblyCount + 1 };
+        case 'INCREMENT_DISTRIBUTION':
+            return { ...state, distributionCount: state.distributionCount + 1 };
+        default:
+            return state;
+    }
+}
+
+
+function Dashboard() {
+    
+
+    const { selectedLine } = useContext(AssemblyContext);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const [distributionCenters, setDistributionCenters] = useState([]);
+
+
+    useEffect(() => {
+        // Fetch distribution centers data
+        setTimeout(() => {
+            setDistributionCenters([
+                { id: 1, name: 'North Distribution Center' },
+                { id: 2, name: 'South Distribution Center' },
+            ]);
+        }, 2000);
+    }, []);
+
+    const totalActions = useMemo(() => {
+        console.log('Calculating total actions...');
+        return state.assemblyCount + state.distributionCount;
+    }, [state.assemblyCount, state.distributionCount]);
+
+    
+const incrementAssembly = useCallback(() => {
+    dispatch({ type: 'INCREMENT_ASSEMBLY' });
+}, []);
+
+const incrementDistribution = useCallback(() => {
+    dispatch({ type: 'INCREMENT_DISTRIBUTION' });
+}, []);
+
+
+    return (
+        <div>
+            <h1>Dashboard</h1>
+            <div>
+            <h2>Total Actions Across All Sections: {totalActions}</h2>
+        </div>
+
+
+            <h2>Assembly Lines</h2>
+            <p>Total Assembly Line Actions: {state.assemblyCount}</p>
+            <button onClick={() => dispatch({ type: 'INCREMENT_ASSEMBLY' })}>
+                Increment Assembly Actions
+            </button>
+
+
+            <h2>Distribution Centers</h2>
+            {distributionCenters.length === 0 ? (
+                <p>Loading distribution centers...</p>
+            ) : (
+                <ul>
+                    {distributionCenters.map((center) => (
+                        <li key={center.id}>{center.name}</li>
+                    ))}
+                </ul>
+            )}
+            <p>Total Distribution Actions: {state.distributionCount}</p>
+            <button onClick={() => dispatch({ type: 'INCREMENT_DISTRIBUTION' })}>
+                Increment Distribution Actions
+            </button>
+        </div>
+    );
+}
+
+
+export default Dashboard;
