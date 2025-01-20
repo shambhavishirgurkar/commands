@@ -2,3 +2,4 @@ cd react-19-lab
  npm uninstall react react-dom 
  npm install react@18 react-dom@18
 npm install @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest web-vitals@latest npm start
+ npm install express@latest react-dom@latest @babel/core@latest @babel/preset-env@latest @babel/preset-react@latest
