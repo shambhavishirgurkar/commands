@@ -1,0 +1,46 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import AssemblyLine from './components/AssemblyLine';
+import DistributionCenters from './components/DistributionCenters';
+import Line1 from './components/Line1';
+import Line2 from './components/Line2';
+import Dashboard from './components/Dashboard';
+import DistributionCenterDetails from './components/DistributionCenterDetails';
+import ProtectedRoute from './components/ProtectedRoutes';
+import Settings from './components/Settings';
+import NotFound from './components/NotFound';
+
+
+
+
+function AppRoutes() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/assembly" element={<AssemblyLine />}>
+                        <Route path="line1" element={<Line1 />} />
+                        <Route path="line2" element={<Line2 />} />
+                </Route>
+
+                <Route path="/distribution" element={<DistributionCenters />} />
+                <Route path="/distribution/:id" element={<DistributionCenterDetails />} />
+
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route  path="/protected" element={<ProtectedRoute isAuthenticated={true}/>}>
+
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="settings" element={<Settings />} />
+
+</Route>
+
+<Route path="*" element={<NotFound />} />
+    
+
+            </Routes>
+        </Router>
+    );
+}
+
+
+export default AppRoutes;
