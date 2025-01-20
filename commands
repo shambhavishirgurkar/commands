@@ -19,10 +19,10 @@ require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react']
 });
 
-import express from 'express';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import App from './src/App';
+const express = require('express');
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+const App = require('./src/App').default; // Ensure correct import for default export
 
 const app = express();
 app.use(express.static('public'));
