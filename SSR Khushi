@@ -1,0 +1,53 @@
+in App.js:
+
+import React from 'react';
+
+const App = () => {
+  return <div>Hello, SSR with React!</div>;
+};
+
+export default App;
+
+
+
+
+in index.js:
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.hydrate(
+  <App />,
+  document.getElementById('root')
+);
+
+
+in server.js: 
+import express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from './src/App';
+
+const app = express();
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+  const content = renderToString(<App />);
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>SSR with React</title>
+      </head>
+      <body>
+        <div id="root">${content}</div>
+        <script src="/bundle.js"></script>
+      </body>
+    </html>
+  `;
+  res.send(html);
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
+});
