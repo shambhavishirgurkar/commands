@@ -1,4 +1,51 @@
 cd react-19-lab
  npm uninstall react react-dom 
  npm install react@18 react-dom@18
-npm install @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest web-vitals@latest npm start
+npm install @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest web-vitals@latest 
+npm start
+
+
+
+
+npm install @babel/register @babel/preset-env @babel/preset-react
+blabel:
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+
+
+server.js:
+// server.js
+require('@babel/register')({
+  presets: ['@babel/preset-env', '@babel/preset-react']
+});
+
+// Import other modules after @babel/register
+const express = require('express');
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+const App = require('./src/App').default;
+
+const app = express();
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+  const content = renderToString(<App />);
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>SSR with React</title>
+      </head>
+      <body>
+        <div id="root">${content}</div>
+        <script src="/bundle.js"></script>
+      </body>
+    </html>
+  `;
+  res.send(html);
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
+});
