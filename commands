@@ -15,16 +15,14 @@ blabel:
 
 
 server.js:
-// server.js
 require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react']
 });
 
-// Import other modules after @babel/register
-const express = require('express');
-const React = require('react');
-const { renderToString } = require('react-dom/server');
-const App = require('./src/App').default;
+import express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from './src/App';
 
 const app = express();
 app.use(express.static('public'));
